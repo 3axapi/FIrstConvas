@@ -6,6 +6,54 @@ const ctx = cnvs.getContext("2d");
 cnvs.width = 1000;
 cnvs.height = 600;
 
+function Asteroid () {
+    this.radius = 10
+    this.xw = (cnvs.width / 2) * (Math.random() * 2);
+    this.x = this.xw < 500 ? this.xw + this.radius : this.xw;
+    this.y = - this.radius;
+    this.dx = (Math.random() - 0.5) * 2 > 0 ? (Math.random() * -this.x) / cnvs.height / 2 : (Math.random() * cnvs.width - this.x) / cnvs.height / 2;
+    this.dy = 1;
+
+    this.update = function () {
+        if (this.y + this.radius > cnvs.height) return;
+        
+        this.x += this.dx;
+        this.y += this.dy;
+        
+        this.draw();
+    }
+
+    this.draw = function () {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius = 10, 0, 2 * PI);
+        ctx.fill();
+    }
+}
+
+let asteroids = [];
+
+function animate () {
+    window.requestAnimationFrame(animate);
+    ctx.clearRect(0, 0, cnvs.width, cnvs.height);
+
+    const AL = asteroids.length
+    for (let c = 0; c < AL; c++) {
+        asteroids[c].update()
+    }
+}
+
+let active = setInterval(() => {
+    asteroids.push(new Asteroid())
+}, 300)
+
+animate();
+
+const btn = document.getElementById("btn");
+btn.onclick = function () {
+    clearInterval(active);
+}
+
+/*
 let radius = 10;
 let x1w = (cnvs.width / 2) * (Math.random() * 2);
 let x1 = x1w < 500 ? x1w + radius : x1w;
@@ -103,23 +151,26 @@ function animate () {
 
 animate();
 console.log(y)
+*/
 
-// function animate () {
-//     var top = parseInt(rect.style.top), left = parseInt(rect.style.left)
-//     rect.style.top = `${top + 1}px`;
-//     rect.style.left = `${left + 1}px`;
-//     requestAnimationFrame(animate);
-// }
+/*
+function animate () {
+    var top = parseInt(rect.style.top), left = parseInt(rect.style.left)
+    rect.style.top = `${top + 1}px`;
+    rect.style.left = `${left + 1}px`;
+    requestAnimationFrame(animate);
+}
 
-// var rect = document.createElement("div");
-// rect.style.width = 50 + "px";
-// rect.style.height = 50 + "px";
-// rect.style.background = "red";
-// rect.style.position = "fixed";
-// rect.style.top = `${cnvs.height + 15}px`;
-// rect.style.left = `${document.body.getBoundingClientRect().left}px`;
-// document.body.appendChild(rect);
+var rect = document.createElement("div");
+rect.style.width = 50 + "px";
+rect.style.height = 50 + "px";
+rect.style.background = "red";
+rect.style.position = "fixed";
+rect.style.top = `${cnvs.height + 15}px`;
+rect.style.left = `${document.body.getBoundingClientRect().left}px`;
+document.body.appendChild(rect);
 
-// console.log()
+console.log()
 
-// animate();
+animate();
+*/
