@@ -6,29 +6,94 @@ const ctx = cnvs.getContext("2d");
 cnvs.width = 1000;
 cnvs.height = 600;
 
-let radius = 25;
-let x = radius + Math.random() * ( cnvs.width - radius * 2 );
-let y = radius + Math.random() * ( cnvs.height - radius * 2 );
-let dx = 4;
-let dy = 4;
+let radius = 10;
+let x1 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x2 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x3 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x4 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x5 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x6 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x7 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x8 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x9 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let x0 = (cnvs.width / 2) * (Math.random() * 2) + radius;
+let y = radius;
+
+let dx1 = (cnvs.width / 2 - x1) / 600
+let dx2 = (cnvs.width / 2 - x2) / 600
+let dx3 = (cnvs.width / 2 - x3) / 600
+let dx4 = (cnvs.width / 2 - x4) / 600
+let dx5 = (cnvs.width / 2 - x5) / 600
+let dx6 = (cnvs.width / 2 - x6) / 600
+let dx7 = (cnvs.width / 2 - x7) / 600
+let dx8 = (cnvs.width / 2 - x8) / 600
+let dx9 = (cnvs.width / 2 - x9) / 600
+let dx0 = (cnvs.width / 2 - x0) / 600
+console.log()
+let dy = 1;
 
 function animate () {
     requestAnimationFrame(animate);
 
     ctx.clearRect(0, 0, cnvs.width, cnvs.height)
 
-    if (x + radius > cnvs.width || x - radius < 0) dx = -dx;
-    if (y + radius > cnvs.height || y - radius < 0) dy = -dy;
+    if (y + radius > cnvs.height || y - radius < 0) return;
 
-    x += dx;
+    x1 += dx1;
+    x2 += dx2;
+    x3 += dx3;
+    x4 += dx4;
+    x5 += dx5;
+    x6 += dx6;
+    x7 += dx7;
+    x8 += dx8;
+    x9 += dx9;
+    x0 += dx0;
     y += dy;
 
     ctx.beginPath();
-    ctx.arc(x, y, radius, 0, 2 * PI);
-    ctx.fill();
+    ctx.arc(x1, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x2, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x3, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x4, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x5, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x6, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x7, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x8, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x9, y, radius, 0, 2 * PI);
+    ctx.stroke();
+    
+    ctx.beginPath();
+    ctx.arc(x0, y, radius, 0, 2 * PI);
+    ctx.stroke();
 }
 
 animate();
+console.log(y)
 
 // function animate () {
 //     var top = parseInt(rect.style.top), left = parseInt(rect.style.left)
