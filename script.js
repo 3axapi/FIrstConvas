@@ -19,17 +19,16 @@ let x9 = (cnvs.width / 2) * (Math.random() * 2) + radius;
 let x0 = (cnvs.width / 2) * (Math.random() * 2) + radius;
 let y = radius;
 
-let dx1 = (cnvs.width / 2 - x1) / 600
-let dx2 = (cnvs.width / 2 - x2) / 600
-let dx3 = (cnvs.width / 2 - x3) / 600
-let dx4 = (cnvs.width / 2 - x4) / 600
-let dx5 = (cnvs.width / 2 - x5) / 600
-let dx6 = (cnvs.width / 2 - x6) / 600
-let dx7 = (cnvs.width / 2 - x7) / 600
-let dx8 = (cnvs.width / 2 - x8) / 600
-let dx9 = (cnvs.width / 2 - x9) / 600
-let dx0 = (cnvs.width / 2 - x0) / 600
-console.log()
+let dx1 = x1 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx2 = x2 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx3 = x3 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx4 = x4 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx5 = x5 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx6 = x6 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx7 = x7 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx8 = x8 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx9 = x9 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
+let dx0 = x0 > 500 ? -cnvs.width / cnvs.height / 2 : cnvs.width / cnvs.height / 2;
 let dy = 1;
 
 function animate () {
