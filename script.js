@@ -7,170 +7,109 @@ cnvs.width = 1000;
 cnvs.height = 600;
 
 function Asteroid () {
-    this.radius = 10
+    this.radius = (Math.random() - 0.75) * 2 > 0 ? 20 : 10;
     this.xw = (cnvs.width / 2) * (Math.random() * 2);
     this.x = this.xw < 500 ? this.xw + this.radius : this.xw;
     this.y = - this.radius;
-    this.dx = (Math.random() - 0.5) * 2 > 0 ? (Math.random() * -this.x) / cnvs.height / 2 : (Math.random() * cnvs.width - this.x) / cnvs.height / 2;
-    this.dy = 1;
+    this.dx = (Math.random() - 0.5) * 2 > 0 ? (Math.random() * -this.x) / cnvs.height * 2 : (Math.random() * cnvs.width - this.x) / cnvs.height * 2;
+    this.dy = 4;
 
     this.update = function () {
-        if (this.y + this.radius > cnvs.height) return;
-        
+        if (false) ;
+        else if (this.y + this.radius > cnvs.height) return;
+  
         this.x += this.dx;
+        this.y += this.dy;     
+        this.draw();
+    }
+
+    this.draw = function () {
+        if (this.x > ship_crds.x - 25 && this.x < ship_crds.x + 25 &&
+            this.y + this.radius > ship_crds.y - 30 && this.y - this.radius < ship_crds.y
+        ) asteroids[0] = true;
+
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.radius, 0, 2 * PI);
+        ctx.fill();
+    }
+}
+
+function Weapon () {
+    this.x = ship_crds.x;
+    this.y = ship_crds.y - 36;
+    this.dy = -20;
+
+    this.update = function () {
+        if (this.y + 10 < 0) return;
         this.y += this.dy;
-        
         this.draw();
     }
 
     this.draw = function () {
         ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius = 10, 0, 2 * PI);
+        ctx.moveTo(this.x - 2, this.y)
+        ctx.lineTo(this.x - 2, this.y - 10)
+        ctx.lineTo(this.x + 2, this.y - 10)
+        ctx.lineTo(this.x + 2, this.y)
+        ctx.lineTo(this.x - 2, this.y)
         ctx.fill();
     }
 }
 
-let asteroids = [];
+let asteroids = {
+    
+};
 
-function animate () {
-    window.requestAnimationFrame(animate);
-    ctx.clearRect(0, 0, cnvs.width, cnvs.height);
-
-    const AL = asteroids.length
-    for (let c = 0; c < AL; c++) {
-        asteroids[c].update()
-    }
-}
-
-let active = setInterval(() => {
+let weapons = [];
+const active = setInterval(() => {
     asteroids.push(new Asteroid())
-}, 300)
+}, 300);
 
-animate();
+function rain () {
+    if (!asteroids[0]) window.requestAnimationFrame(rain)
 
-const btn = document.getElementById("btn");
-btn.onclick = function () {
-    clearInterval(active);
+    ctx.clearRect(0, 0, cnvs.width, cnvs.height);
+    const AL = asteroids.length
+
+    for (let c = 1; c < AL; c++) asteroids[c].update()
 }
 
-/*
-let radius = 10;
-let x1w = (cnvs.width / 2) * (Math.random() * 2);
-let x1 = x1w < 500 ? x1w + radius : x1w;
-let x2w = (cnvs.width / 2) * (Math.random() * 2);
-let x2 = x2w < 500 ? x2w + radius : x2w;
-let x3w = (cnvs.width / 2) * (Math.random() * 2);
-let x3 = x3w < 500 ? x3w + radius : x3w;
-let x4w = (cnvs.width / 2) * (Math.random() * 2);
-let x4 = x4w < 500 ? x4w + radius : x4w;
-let x5w = (cnvs.width / 2) * (Math.random() * 2);
-let x5 = x5w < 500 ? x5w + radius : x5w;
-let x6w = (cnvs.width / 2) * (Math.random() * 2);
-let x6 = x6w < 500 ? x6w + radius : x6w;
-let x7w = (cnvs.width / 2) * (Math.random() * 2);
-let x7 = x7w < 500 ? x7w + radius : x7w;
-let x8w = (cnvs.width / 2) * (Math.random() * 2);
-let x8 = x8w < 500 ? x8w + radius : x8w;
-let x9w = (cnvs.width / 2) * (Math.random() * 2);
-let x9 = x9w < 500 ? x9w + radius : x9w;
-let x0w = (cnvs.width / 2) * (Math.random() * 2);
-let x0 = x0w < 500 ? x0w + radius : x0w;
-let y = radius;
-
-let dx1 = x1 < 500 ? (Math.random() * x1) / cnvs.height / 2 : (Math.random() * x1 - cnvs.width) / cnvs.height / 2;
-let dx2 = x2 < 500 ? (Math.random() * x2) / cnvs.height / 2 : (Math.random() * x2 - cnvs.width) / cnvs.height / 2;
-let dx3 = x3 < 500 ? (Math.random() * x3) / cnvs.height / 2 : (Math.random() * x3 - cnvs.width) / cnvs.height / 2;
-let dx4 = x4 < 500 ? (Math.random() * x4) / cnvs.height / 2 : (Math.random() * x4 - cnvs.width) / cnvs.height / 2;
-let dx5 = x5 < 500 ? (Math.random() * x5) / cnvs.height / 2 : (Math.random() * x5 - cnvs.width) / cnvs.height / 2;
-let dx6 = x6 < 500 ? (Math.random() * x6) / cnvs.height / 2 : (Math.random() * x6 - cnvs.width) / cnvs.height / 2;
-let dx7 = x7 < 500 ? (Math.random() * x7) / cnvs.height / 2 : (Math.random() * x7 - cnvs.width) / cnvs.height / 2;
-let dx8 = x8 < 500 ? (Math.random() * x8) / cnvs.height / 2 : (Math.random() * x8 - cnvs.width) / cnvs.height / 2;
-let dx9 = x9 < 500 ? (Math.random() * x9) / cnvs.height / 2 : (Math.random() * x9 - cnvs.width) / cnvs.height / 2;
-let dx0 = x0 < 500 ? (Math.random() * x0) / cnvs.height / 2 : (Math.random() * x0 - cnvs.width) / cnvs.height / 2;
-let dy = 1;
-
-function animate () {
-    requestAnimationFrame(animate);
-
-    ctx.clearRect(0, 0, cnvs.width, cnvs.height)
-
-    if (y + radius > cnvs.height || y - radius < 0) return;
-
-    x1 += dx1;
-    x2 += dx2;
-    x3 += dx3;
-    x4 += dx4;
-    x5 += dx5;
-    x6 += dx6;
-    x7 += dx7;
-    x8 += dx8;
-    x9 += dx9;
-    x0 += dx0;
-    y += dy;
+function ship () {
+    if (!asteroids[0]) window.requestAnimationFrame(ship);
+    else return;
 
     ctx.beginPath();
-    ctx.arc(x1, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x2, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x3, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x4, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x5, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x6, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x7, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x8, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x9, y, radius, 0, 2 * PI);
-    ctx.stroke();
-    
-    ctx.beginPath();
-    ctx.arc(x0, y, radius, 0, 2 * PI);
-    ctx.stroke();
+    ctx.moveTo(ship_crds.x, ship_crds.y)
+    ctx.lineTo(ship_crds.x - 15, ship_crds.y);
+    ctx.lineTo(ship_crds.x, ship_crds.y - 30);
+    ctx.lineTo(ship_crds.x + 15, ship_crds.y);
+    ctx.lineTo(ship_crds.x, ship_crds.y)
+    ctx.fill();
 }
 
-animate();
-console.log(y)
-*/
-
-/*
-function animate () {
-    var top = parseInt(rect.style.top), left = parseInt(rect.style.left)
-    rect.style.top = `${top + 1}px`;
-    rect.style.left = `${left + 1}px`;
-    requestAnimationFrame(animate);
+function fire () {
+    if (!asteroids[0]) window.requestAnimationFrame(fire);
+    else return
+    
+    const WL = weapons.length;
+    for (let c = 0; c < WL; c++) weapons[c].update();
 }
 
-var rect = document.createElement("div");
-rect.style.width = 50 + "px";
-rect.style.height = 50 + "px";
-rect.style.background = "red";
-rect.style.position = "fixed";
-rect.style.top = `${cnvs.height + 15}px`;
-rect.style.left = `${document.body.getBoundingClientRect().left}px`;
-document.body.appendChild(rect);
+const ship_crds = {
+    x: cnvs.width / 2,
+    y: cnvs.height - 5
+}
 
-console.log()
+const body = document.body;
 
-animate();
-*/
+body.addEventListener("keypress", (event) => {
+    if (event.key.toLowerCase() == "a") ship_crds.x -= 50
+    else if (event.key.toLowerCase() == "w") ship_crds.y -= 50
+    else if (event.key.toLowerCase() == "d") ship_crds.x += 50
+    else if (event.key.toLowerCase() == "s") ship_crds.y += 50
+    else if (event.key.toLowerCase() == "j") weapons.push(new Weapon());
+});
+
+rain();
+ship();
+fire();
