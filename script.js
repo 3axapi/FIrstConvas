@@ -11,10 +11,12 @@ function Asteroid () {
     this.xw = (cnvs.width / 2) * (Math.random() * 2);
     this.x = this.xw < 500 ? this.xw + this.radius : this.xw;
     this.y = - this.radius;
-    this.dx = (Math.random() - 0.5) * 2 > 0 ? (Math.random() * -this.x) / cnvs.height * 2 : (Math.random() * cnvs.width - this.x) / cnvs.height * 2;
-    this.dy = 4;
+    this.dx = (Math.random() - 0.5) * 2 > 0 ? (Math.random() * -this.x) / cnvs.height : (Math.random() * cnvs.width - this.x) / cnvs.height;
+    this.dy = 2;
+    this.health = 1;
 
     this.update = function () {
+        if (!this.health) return
         if (this.y + this.radius > cnvs.height) return;
   
         this.x += this.dx;
@@ -23,13 +25,22 @@ function Asteroid () {
     }
 
     this.draw = function () {
-        if (weapons_cords[cindex]?.y && weapons_cords[cindex]?.y > 0) for (let wc = cindex; wc < c; wc++) {
-            
-        } else if (weapons_cords[cindex + 1]?.y && weapons_cords[cindex + 1]?.y > 0) for (let wc = cindex + 1; wc < c; wc++) {
-            
+        let index;
+        for (index = 0; index < Object.keys(weapons_cords).length + cnvs.height / 40; index++) if (weapons_cords[cindex + index]) break
+        if (weapons_cords[cindex + index]?.y && weapons_cords[cindex + index]?.y > 0) for (let wc = cindex + index; wc < c; wc++) {
+            if (this.x + this.radius > weapons_cords[wc]?.x - 2 && this.x - this.radius < weapons_cords[wc]?.x + 2 &&
+                this.y + this.radius > weapons_cords[wc]?.y - 10 && this.y - this.radius < weapons_cords[wc]?.y
+            ) {
+                if (this.radius == 20) this.health -= 0.5;
+                else this.health = 0;
+                delete weapons[weapons_cords[wc].id];
+                delete weapons_cords[weapons_cords[wc].id];
+            }
         }
+        
+        if (!this.health) return
 
-        if (this.x > ship_crds.x - 25 && this.x < ship_crds.x + 25 &&
+        if (this.x + this.radius > ship_crds.x - 15 && this.x - this.radius < ship_crds.x + 15 &&
             this.y + this.radius > ship_crds.y - 30 && this.y - this.radius < ship_crds.y
         ) asteroids[0] = true;
 
@@ -95,6 +106,11 @@ function ship () {
     if (!asteroids[0]) window.requestAnimationFrame(ship);
     else return;
 
+    if (keyA) ship_crds.x -= 5;
+    if (keyW) ship_crds.y -= 5;
+    if (keyD) ship_crds.x += 5;
+    if (keyS) ship_crds.y += 5;
+
     ctx.beginPath();
     ctx.moveTo(ship_crds.x, ship_crds.y)
     ctx.lineTo(ship_crds.x - 15, ship_crds.y);
@@ -120,16 +136,28 @@ const ship_crds = {
 var c = 0;
 var cindex;
 
-window.addEventListener("keypress", (event) => {
-    if (event.key.toLowerCase() == "a") ship_crds.x -= 50
-    else if (event.key.toLowerCase() == "w") ship_crds.y -= 50
-    else if (event.key.toLowerCase() == "d") ship_crds.x += 50
-    else if (event.key.toLowerCase() == "s") ship_crds.y += 50
-    else if (event.key.toLowerCase() == "j") {
+var keyA = false;
+var keyW = false;
+var keyD = false;
+var keyS = false;
+
+window.addEventListener("keydown", (event) => {
+    if (event.key.toLowerCase() == "a") keyA = true;
+    if (event.key.toLowerCase() == "w") keyW = true;
+    if (event.key.toLowerCase() == "d") keyD = true;
+    if (event.key.toLowerCase() == "s") keyS = true;
+    if (event.key.toLowerCase() == "j") {
         cindex = (c - 1) - (Object.keys(weapons_cords).length - 1)
         weapons.push(new Weapon(c++));
     }
 });
+
+window.addEventListener("keyup", (event) => {
+    if (event.key.toLowerCase() == "a") keyA = false;
+    if (event.key.toLowerCase() == "w") keyW = false;
+    if (event.key.toLowerCase() == "d") keyD = false;
+    if (event.key.toLowerCase() == "s") keyS = false;
+})
 
 window.addEventListener("keypress", (event) => {
     let co = c - 1;
