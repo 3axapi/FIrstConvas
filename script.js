@@ -15,8 +15,7 @@ function Asteroid () {
     this.dy = 4;
 
     this.update = function () {
-        if (false) ;
-        else if (this.y + this.radius > cnvs.height) return;
+        if (this.y + this.radius > cnvs.height) return;
   
         this.x += this.dx;
         this.y += this.dy;     
@@ -24,6 +23,12 @@ function Asteroid () {
     }
 
     this.draw = function () {
+        if (weapons_cords[cindex]?.y && weapons_cords[cindex]?.y > 0) for (let wc = cindex; wc < c; wc++) {
+            
+        } else if (weapons_cords[cindex + 1]?.y && weapons_cords[cindex + 1]?.y > 0) for (let wc = cindex + 1; wc < c; wc++) {
+            
+        }
+
         if (this.x > ship_crds.x - 25 && this.x < ship_crds.x + 25 &&
             this.y + this.radius > ship_crds.y - 30 && this.y - this.radius < ship_crds.y
         ) asteroids[0] = true;
@@ -34,14 +39,25 @@ function Asteroid () {
     }
 }
 
-function Weapon () {
+function Weapon (id) {
     this.x = ship_crds.x;
     this.y = ship_crds.y - 36;
     this.dy = -20;
+    this.id = id;
 
     this.update = function () {
-        if (this.y + 10 < 0) return;
+        if (this.y + 10 < 0) {
+            delete weapons[this.id];
+            delete weapons_cords[this.id]
+            return;
+        };
+
         this.y += this.dy;
+        weapons_cords[this.id] = {
+            id: this.id,
+            x: this.x,
+            y: this.y
+        };
         this.draw();
     }
 
@@ -56,11 +72,12 @@ function Weapon () {
     }
 }
 
-let asteroids = {
-    
+const asteroids = [false];
+const weapons = [];
+const weapons_cords = {
+
 };
 
-let weapons = [];
 const active = setInterval(() => {
     asteroids.push(new Asteroid())
 }, 300);
@@ -92,7 +109,7 @@ function fire () {
     else return
     
     const WL = weapons.length;
-    for (let c = 0; c < WL; c++) weapons[c].update();
+    for (let c = 0; c < WL; c++) if (weapons[c]) weapons[c].update();
 }
 
 const ship_crds = {
@@ -100,15 +117,24 @@ const ship_crds = {
     y: cnvs.height - 5
 }
 
-const body = document.body;
+var c = 0;
+var cindex;
 
-body.addEventListener("keypress", (event) => {
+window.addEventListener("keypress", (event) => {
     if (event.key.toLowerCase() == "a") ship_crds.x -= 50
     else if (event.key.toLowerCase() == "w") ship_crds.y -= 50
     else if (event.key.toLowerCase() == "d") ship_crds.x += 50
     else if (event.key.toLowerCase() == "s") ship_crds.y += 50
-    else if (event.key.toLowerCase() == "j") weapons.push(new Weapon());
+    else if (event.key.toLowerCase() == "j") {
+        cindex = (c - 1) - (Object.keys(weapons_cords).length - 1)
+        weapons.push(new Weapon(c++));
+    }
 });
+
+window.addEventListener("keypress", (event) => {
+    let co = c - 1;
+    if (event.key == " ") console.log(weapons_cords[cindex]);
+})
 
 rain();
 ship();
